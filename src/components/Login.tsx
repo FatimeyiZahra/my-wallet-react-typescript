@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import showError from "../utils/showError";
-import api from "../utils/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginForm } from "../types/user";
-import { useDispatch } from "react-redux";
 import { login } from "../redux/actions/userActions";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { useSelector } from "react-redux";
+import { RootState } from "../redux/store/store";
+import showSuccess from "../utils/showSucces";
+
 const Login = () => {
   interface LocationState {
     state: {
@@ -15,41 +15,35 @@ const Login = () => {
     };
   }
 
-  // const dispatch = useDispatch<AppDispatch>()
-
   const showMsg = (Message: string) => {
     message.success(Message);
   };
   const location = useLocation() as LocationState;
-
+  console.log(location);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (location.state?.newUser) {
-  //     showMsg("Succesfully signup. SignIn with ut certain info");
-  //   }
-  // }, []);
 
   const dispatch = useAppDispatch();
   const onFinish = (values: LoginForm) => {
-    dispatch(login(values));
+    dispatch(login(values, navigate));
   };
-  const user = useAppSelector((state) => console.log(state.user));
-  // const dispatch: AppDispatch = useDispatch();
+  const user = useAppSelector((state: RootState) => state.user);
 
-  // const onFinish = async (values: any) => {
-  //   console.log("Success:", values);
-  //   navigate("/home");
-  //   try {
-  //     await api.post("/users/login", values);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    if (location.state){
+      if(location.state.newUser){
+        showSuccess("enter ur credentials")
+      }
+    }
+  }, [location]);
 
-  // const onFinishFailed = (errorInfo: any) => {
-  //   console.log("Failed:", { errorInfo });
-  //   showError(errorInfo);
-  // };
+  useEffect(() => {
+    user.data.username && showSuccess("You have successfully logged in!");
+  }, [user.data.username]);
+
+  useEffect(() => {
+    user.error && showError(user.error);
+  }, [user.error]);
+
   return (
     <>
       <Form
