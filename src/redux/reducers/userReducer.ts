@@ -5,7 +5,7 @@ const defaultState: UserState = {
   loading: false,
   error: "",
 };
-const userReducer = (state: UserState = defaultState, action: UserAction) => {
+const userReducer = (state = defaultState, action: UserAction) => {
   switch (action.type) {
     case "LOGIN_START":
       return { ...state, loading: true, error: "" };

@@ -14,7 +14,7 @@ const Login = () => {
       newUser?: boolean;
     };
   }
-
+ 
   const showMsg = (Message: string) => {
     message.success(Message);
   };
@@ -29,9 +29,9 @@ const Login = () => {
   const user = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (location.state){
-      if(location.state.newUser){
-        showSuccess("enter ur credentials")
+    if (location.state) {
+      if (location.state.newUser) {
+        showSuccess("enter ur credentials");
       }
     }
   }, [location]);
@@ -44,8 +44,31 @@ const Login = () => {
     user.error && showError(user.error);
   }, [user.error]);
 
+  const loading = () => {
+    return user.loading ? (
+      <>
+        <div
+          style={{ height: "100vh", width: "100%", backgroundColor: "black" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              alignSelf: "center",
+              color: "white"
+            }}
+          >
+            <h1>Loading...</h1>
+          </div>
+        </div>
+      </>
+    ) : null;
+  };
+  
   return (
     <>
+      {loading()}
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -64,7 +87,7 @@ const Login = () => {
           name="username"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
-          <Input />
+          <Input defaultValue="zaxra" />
         </Form.Item>
 
         <Form.Item
@@ -72,7 +95,7 @@ const Login = () => {
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password />
+          <Input.Password defaultValue="zaxra123"/>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

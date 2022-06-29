@@ -12,7 +12,7 @@ async dispatch => {
     const response = await api.post<User>("/users/login", creds);
     dispatch({ type: LOGIN_SUCCESS, payload: response.data });
     localStorage.setItem("token", response.data.token);
-    navigate("/home")
+    navigate("/")
   } catch {
     dispatch({ type: LOGIN_ERROR });
   }

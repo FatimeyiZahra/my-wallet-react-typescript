@@ -18,7 +18,6 @@ const SignUp = () => {
           newUser: true,
         },
       });
-      console.log("succesfully");
     } catch (error) {
       showError((error as any).response.data.errorMessage);
     }
