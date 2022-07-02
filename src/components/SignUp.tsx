@@ -11,7 +11,7 @@ const SignUp = () => {
 
   const onFinish = async (values: any) => {
     try {
-      await api.post("/users/register", values);
+      await api().post("/users/register", values);
       // navigate("/login", { newUser: true });
       navigate("/login", {
         state: {

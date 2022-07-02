@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import CategoryPage from "./components/CategoryPage";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="category" element={<CategoryPage/>}/>
           </Route>
         </Route>
       </Routes>

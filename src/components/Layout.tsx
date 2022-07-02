@@ -6,6 +6,7 @@ const Layout = () => {
   return (
     <>
    <Link to={"/"}>home</Link>
+   <Link to={"/category"}>category</Link>
     <Outlet/>
     <h1>footer</h1>
    </>
