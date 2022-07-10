@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Modal, Select, Space, Table, Tag } from "antd";
-import { Category } from "../types/category";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  InputRef,
+  Modal,
+  Select,
+  Space,
+  Table,
+  Tag,
+} from "antd";
+import { Category, CategoryForm } from "../types/category";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { RootState } from "../redux/store/store";
-import { getAllCategory } from "../redux/actions/categoryActions";
+import { addCategory, getAllCategory } from "../redux/actions/categoryActions";
 
 type Mode = "new" | "edit";
+
+const emptyForm: CategoryForm = {
+  name: "",
+  type: "expense",
+  color: "",
+};
 
 const CategoryPage = () => {
   const { data, loading, error } = useAppSelector(
     (state: RootState) => state.category
   );
-  console.log(data);
 
   const dispatch = useAppDispatch();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form, setForm] = useState<CategoryForm>(emptyForm);
+  console.log(form);
   const [mode, setMode] = useState<Mode>("new");
 
   const showModal = (mode: Mode) => {
@@ -24,7 +41,12 @@ const CategoryPage = () => {
   };
 
   const handleOk = () => {
+   
+    if(mode==="new"){
+      dispatch(addCategory(form))
+    } 
     setIsModalVisible(false);
+    setForm(emptyForm)
     setMode("new");
   };
 
@@ -79,17 +101,23 @@ const CategoryPage = () => {
       >
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
           <Form.Item label="category name">
-            <Input />
+            <Input
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
           </Form.Item>
-          <Form.Item label="type">
-            <Select>
-              <Select.Option value="demo">Demo</Select.Option>
+          <Form.Item label="category type">
+            <Select value={form.type} defaultValue="expense"  onChange={(type) => setForm({ ...form, type })}>
+              <Select.Option value="income">income</Select.Option>
+              <Select.Option value="expense">expense</Select.Option>
             </Select>
           </Form.Item>
-
-          <Form.Item label="Button">
-            <Button>Button</Button>
-          </Form.Item>
+          <Form.Item label="Color">
+          <Input
+              value={form.color}
+              onChange={(e) => setForm({ ...form, color: e.target.value })}
+            />
+            </Form.Item>
         </Form>
       </Modal>
     </>

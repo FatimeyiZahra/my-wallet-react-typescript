@@ -1,6 +1,8 @@
 export const GET_ALL_CATEGORY_SUCCESS = "GET_ALL_CATEGORY_SUCCESS";
 export const GET_ALL_CATEGORY_START = "GET_ALL_CATEGORY_START";
 export const GET_ALL_CATEGORY_ERROR = "GET_ALL_CATEGORY_ERROR";
+export const ADD_CATEGORY_SUCCESS = "ADD_CATEGORY_SUCCESS";
+
 
 interface GET_ALL_CATEGORY_SUCCESS {
   type: typeof GET_ALL_CATEGORY_SUCCESS;
@@ -14,7 +16,15 @@ interface GET_ALL_CATEGORY_START {
 interface GET_ALL_CATEGORY_ERROR {
   type: typeof GET_ALL_CATEGORY_ERROR;
 }
-
+interface ADD_CATEGORY_SUCCESS{
+  type: typeof ADD_CATEGORY_SUCCESS;
+  payload:Category
+}
+export interface CategoryForm {
+  name: string;
+  type: string;
+  color?: string;
+}
 export interface Category {
   id: number;
   name: string;
@@ -31,4 +41,5 @@ export interface CategoryState {
 export type CategoryActions =
   | GET_ALL_CATEGORY_SUCCESS
   | GET_ALL_CATEGORY_START
-  | GET_ALL_CATEGORY_ERROR;
+  | GET_ALL_CATEGORY_ERROR
+  | ADD_CATEGORY_SUCCESS
