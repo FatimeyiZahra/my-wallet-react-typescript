@@ -14,8 +14,22 @@ const categoryReducer = (state = initialState, action: CategoryActions) => {
       return { ...state, data: action.payload, loading: false, error: "" };
     case "GET_ALL_CATEGORY_ERROR":
       return { ...state, loading: false, error: "cant get the  categories" };
+    case "ADD_CATEGORY_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        data: [action.payload, ...state.data],
+      };
+    case "UPDATE_CATEGORY_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        data: state.data.map((category) => 
+          category.id === action.payload.id ? action.payload : category
+        ),
+      };
     default:
-     return state
+      return state;
   }
 };
 export default categoryReducer;

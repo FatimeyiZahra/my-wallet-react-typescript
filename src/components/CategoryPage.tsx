@@ -13,9 +13,9 @@ import {
 import { Category, CategoryForm } from "../types/category";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { RootState } from "../redux/store/store";
-import { addCategory, getAllCategory } from "../redux/actions/categoryActions";
-
-type Mode = "new" | "edit";
+import { addCategory, getAllCategory, updateCategory } from "../redux/actions/categoryActions";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+type Mode = "new" | "edit" | "delete";
 
 const emptyForm: CategoryForm = {
   name: "",
@@ -32,21 +32,22 @@ const CategoryPage = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form, setForm] = useState<CategoryForm>(emptyForm);
-  console.log(form);
   const [mode, setMode] = useState<Mode>("new");
-
+    const [categoryId, setCategoryId] = useState<number|null>(null)
   const showModal = (mode: Mode) => {
     setIsModalVisible(true);
     setMode(mode);
   };
 
   const handleOk = () => {
-   
-    if(mode==="new"){
-      dispatch(addCategory(form))
-    } 
+    if (mode === "new") {
+      dispatch(addCategory(form));
+    }
+    if(mode==="edit" && typeof categoryId === "number"){
+      dispatch(updateCategory(categoryId,form))
+    }
     setIsModalVisible(false);
-    setForm(emptyForm)
+    setForm(emptyForm);
     setMode("new");
   };
 
@@ -73,16 +74,27 @@ const CategoryPage = () => {
         return <Tag color={category.color}>{text.toUpperCase()}</Tag>;
       },
     },
-    // {
-    //   title: 'Action',
-    //   key: 'action',
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <a>Invite {record.name}</a>
-    //       <a>Delete</a>
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "action",
+      render: (text: string, category: Category) => (
+        <Space size="middle">
+          <EditOutlined
+            onClick={() => {
+              showModal("edit");
+              setForm(category);
+              setCategoryId(category.id)
+            }}
+          />
+          <DeleteOutlined
+            onClick={() => {
+              showModal("delete");
+            }}
+          />
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -98,26 +110,31 @@ const CategoryPage = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        okButtonProps={{ disabled: !form.name }}
       >
-        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 14 }}>
-          <Form.Item label="category name">
+        <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+          <Form.Item label="category name" required>
             <Input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
           </Form.Item>
           <Form.Item label="category type">
-            <Select value={form.type} defaultValue="expense"  onChange={(type) => setForm({ ...form, type })}>
+            <Select
+              value={form.type}
+              defaultValue="expense"
+              onChange={(type) => setForm({ ...form, type })}
+            >
               <Select.Option value="income">income</Select.Option>
               <Select.Option value="expense">expense</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item label="Color">
-          <Input
+            <Input
               value={form.color}
               onChange={(e) => setForm({ ...form, color: e.target.value })}
             />
-            </Form.Item>
+          </Form.Item>
         </Form>
       </Modal>
     </>
