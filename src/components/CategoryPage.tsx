@@ -13,9 +13,14 @@ import {
 import { Category, CategoryForm } from "../types/category";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { RootState } from "../redux/store/store";
-import { addCategory, getAllCategory, updateCategory } from "../redux/actions/categoryActions";
+import {
+  addCategory,
+  getAllCategory,
+  updateCategory,
+} from "../redux/actions/categoryActions";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-type Mode = "new" | "edit" | "delete";
+import ManageModal from "./ManageModal";
+export type Mode = "new" | "edit" | "delete";
 
 const emptyForm: CategoryForm = {
   name: "",
@@ -33,7 +38,7 @@ const CategoryPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form, setForm] = useState<CategoryForm>(emptyForm);
   const [mode, setMode] = useState<Mode>("new");
-    const [categoryId, setCategoryId] = useState<number|null>(null)
+  const [categoryId, setCategoryId] = useState<number | null>(null);
   const showModal = (mode: Mode) => {
     setIsModalVisible(true);
     setMode(mode);
@@ -43,8 +48,8 @@ const CategoryPage = () => {
     if (mode === "new") {
       dispatch(addCategory(form));
     }
-    if(mode==="edit" && typeof categoryId === "number"){
-      dispatch(updateCategory(categoryId,form))
+    if (mode === "edit" && typeof categoryId === "number") {
+      dispatch(updateCategory(categoryId, form));
     }
     setIsModalVisible(false);
     setForm(emptyForm);
@@ -84,7 +89,7 @@ const CategoryPage = () => {
             onClick={() => {
               showModal("edit");
               setForm(category);
-              setCategoryId(category.id)
+              setCategoryId(category.id);
             }}
           />
           <DeleteOutlined
@@ -105,38 +110,14 @@ const CategoryPage = () => {
         </Button>
         <Table columns={columns} dataSource={data} />
       </div>
-      <Modal
-        title={mode === "new" ? "CREATE NEW CATEGORY" : "UPDATE CATEGORY"}
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okButtonProps={{ disabled: !form.name }}
-      >
-        <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-          <Form.Item label="category name" required>
-            <Input
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item label="category type">
-            <Select
-              value={form.type}
-              defaultValue="expense"
-              onChange={(type) => setForm({ ...form, type })}
-            >
-              <Select.Option value="income">income</Select.Option>
-              <Select.Option value="expense">expense</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Color">
-            <Input
-              value={form.color}
-              onChange={(e) => setForm({ ...form, color: e.target.value })}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <ManageModal
+        mode={mode}
+        isModalVisible={isModalVisible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        form={form}
+        setForm={setForm}
+      />
     </>
   );
 };
