@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { RootState } from "../redux/store/store";
 import {
   addCategory,
+  deleteCategory,
   getAllCategory,
   updateCategory,
 } from "../redux/actions/categoryActions";
@@ -39,6 +40,7 @@ const CategoryPage = () => {
   const [form, setForm] = useState<CategoryForm>(emptyForm);
   const [mode, setMode] = useState<Mode>("new");
   const [categoryId, setCategoryId] = useState<number | null>(null);
+console.log(categoryId)
   const showModal = (mode: Mode) => {
     setIsModalVisible(true);
     setMode(mode);
@@ -51,14 +53,20 @@ const CategoryPage = () => {
     if (mode === "edit" && typeof categoryId === "number") {
       dispatch(updateCategory(categoryId, form));
     }
+    if(mode==="delete" && typeof categoryId === "number"){
+      dispatch(deleteCategory(categoryId))
+    }
     setIsModalVisible(false);
     setForm(emptyForm);
     setMode("new");
+    setCategoryId(null);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setForm(emptyForm);
     setMode("new");
+    setCategoryId(null);
   };
 
   useEffect(() => {
@@ -95,6 +103,7 @@ const CategoryPage = () => {
           <DeleteOutlined
             onClick={() => {
               showModal("delete");
+              setCategoryId(category.id)
             }}
           />
         </Space>

@@ -3,6 +3,7 @@ export const GET_ALL_CATEGORY_START = "GET_ALL_CATEGORY_START";
 export const GET_ALL_CATEGORY_ERROR = "GET_ALL_CATEGORY_ERROR";
 export const ADD_CATEGORY_SUCCESS = "ADD_CATEGORY_SUCCESS";
 export const UPDATE_CATEGORY_SUCCESS = "UPDATE_CATEGORY_SUCCESS";
+export const DELETE_SUCCESS_CATEGORY = "DELETE_SUCCESS_CATEGORY";
 
 interface GET_ALL_CATEGORY_SUCCESS {
   type: typeof GET_ALL_CATEGORY_SUCCESS;
@@ -16,13 +17,17 @@ interface GET_ALL_CATEGORY_START {
 interface GET_ALL_CATEGORY_ERROR {
   type: typeof GET_ALL_CATEGORY_ERROR;
 }
-interface ADD_CATEGORY_SUCCESS{
+interface ADD_CATEGORY_SUCCESS {
   type: typeof ADD_CATEGORY_SUCCESS;
-  payload:Category
+  payload: Category;
 }
-interface UPDATE_CATEGORY_SUCCESS{
+interface UPDATE_CATEGORY_SUCCESS {
   type: typeof UPDATE_CATEGORY_SUCCESS;
-  payload:Category;
+  payload: Category;
+}
+interface DELETE_SUCCESS_CATEGORY {
+  type: typeof DELETE_SUCCESS_CATEGORY;
+  payload: number;
 }
 export interface CategoryForm {
   name: string;
@@ -48,3 +53,4 @@ export type CategoryActions =
   | GET_ALL_CATEGORY_ERROR
   | ADD_CATEGORY_SUCCESS
   | UPDATE_CATEGORY_SUCCESS
+  | DELETE_SUCCESS_CATEGORY;

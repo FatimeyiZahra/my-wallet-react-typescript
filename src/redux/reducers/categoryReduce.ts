@@ -24,9 +24,15 @@ const categoryReducer = (state = initialState, action: CategoryActions) => {
       return {
         ...state,
         loading: false,
-        data: state.data.map((category) => 
+        data: state.data.map((category) =>
           category.id === action.payload.id ? action.payload : category
         ),
+      };
+    case "DELETE_SUCCESS_CATEGORY":
+      return {
+        ...state,
+        loading: false,
+        data: state.data.filter((item) => item.id !== action.payload),
       };
     default:
       return state;

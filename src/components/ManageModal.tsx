@@ -14,13 +14,15 @@ type ModalProps={
 const ManageModal = ({mode,isModalVisible,handleOk,handleCancel,form,setForm}:ModalProps) => {
   return (
     <Modal
-      title = {mode === "new" ? "CREATE NEW CATEGORY" : "UPDATE CATEGORY"}
+      title = {mode === "new" ? "CREATE NEW CATEGORY" : mode==="edit" ? "UPDATE CATEGORY":"DELETE CATEGORY"}
       visible = {isModalVisible}
       onOk = {handleOk}
       onCancel = {handleCancel}
-      okButtonProps = {{ disabled: !form.name }}
+      okButtonProps = {{ disabled:  !(mode === "delete") && !form.name }}
     >
-      <Form labelCol = {{ span: 8 }} wrapperCol={{ span: 16 }}>
+      {mode==="new" || mode==="edit" ?
+       <>
+         <Form labelCol = {{ span: 8 }} wrapperCol={{ span: 16 }}>
         <Form.Item label="category name" required>
           <Input
             value = {form.name}
@@ -43,7 +45,12 @@ const ManageModal = ({mode,isModalVisible,handleOk,handleCancel,form,setForm}:Mo
             onChange={(e) => setForm({ ...form, color: e.target.value })}
           />
         </Form.Item>
-      </Form>
+         </Form>
+      </>:
+      <>
+        <h1>Are You Sure?</h1>
+      </>}
+     
     </Modal>
   );
 };
