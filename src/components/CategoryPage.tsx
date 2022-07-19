@@ -40,7 +40,6 @@ const CategoryPage = () => {
   const [form, setForm] = useState<CategoryForm>(emptyForm);
   const [mode, setMode] = useState<Mode>("new");
   const [categoryId, setCategoryId] = useState<number | null>(null);
-console.log(categoryId)
   const showModal = (mode: Mode) => {
     setIsModalVisible(true);
     setMode(mode);
@@ -117,7 +116,7 @@ console.log(categoryId)
         <Button type="primary" onClick={() => showModal("new")}>
           Create Category
         </Button>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={data}    rowKey="id"/>
       </div>
       <ManageModal
         mode={mode}
